@@ -1,0 +1,40 @@
+{
+  "name": "splunkmint",
+  "version": "0.9.0",
+  "description": "\n    \tCordova plugin for Splunk MINT\n    ",
+  "cordova": {
+    "id": "splunkmint",
+    "platforms": [
+      "android",
+      "ios"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PanosJee/splunk-mint-cordova.git"
+  },
+  "keywords": [
+    "cordova",
+    "splunk",
+    "mint",
+    "splunkmint",
+    "apm",
+    "mobile",
+    "analytics",
+    "ecosystem:cordova",
+    "cordova-android",
+    "cordova-ios"
+  ],
+  "engines": [
+    {
+      "name": "cordova",
+      "version": ">=3.3.0"
+    }
+  ],
+  "author": "Panos Papadopoulos",
+  "license": "\n    \tApache 2.0\n    ",
+  "bugs": {
+    "url": "https://github.com/PanosJee/splunk-mint-cordova/issues"
+  },
+  "homepage": "https://github.com/PanosJee/splunk-mint-cordova#readme"
+}

@@ -1,0 +1,80 @@
+<?xml version='1.0' encoding='utf-8'?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    id="splunkmint"
+    version="4.2.1">
+
+    <name>splunkmint</name>
+    <js-module name="tracekit" src="www/tracekit.js">
+        <merges target="splunkmint"/>
+    </js-module>
+    <js-module name="mintbridge" src="www/mintbridge.js">
+        <merges target="splunkmint"/>
+    </js-module>
+    <js-module name="splunkmint" src="www/splunkmint.js">
+        <clobbers target="splunkmint.cordova"/>
+    </js-module>
+    <description>
+    	Cordova plugin for Splunk MINT
+    </description>
+    <license>
+    	Apache 2.0
+    </license>
+    <keywords>
+    	cordova,splunk,mint,splunkmint,apm,mobile,analytics
+    </keywords>
+    <engines>
+        <engine name="cordova" version=">=3.3.0" />
+    </engines>
+    <!-- android -->
+    <platform name="android">
+        <!-- copy MINT Lib -->
+        <source-file src="platforms/android/libs/mint-4.4.0.jar" target-dir="libs/" framework="true" />
+        <!-- MINT cordova plugin src files --> 
+        <source-file src="platforms/android/src/CordovaMint.java" target-dir="src/splunkmint" />
+        
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="CordovaMint">
+                <param name="android-package" value="splunkmint.CordovaMint" />
+                <param name="onload" value="true" />
+            </feature>
+        </config-file>
+        <preference name="API_KEY" />
+        <source-file src="platforms/android/res/values/splunkmint.xml" target-dir="res/values/" />
+        <config-file target="res/values/splunkmint.xml" parent="/*">
+            <string name="API_KEY">$API_KEY</string>
+        </config-file>
+        <config-file target="AndroidManifest.xml" parent="application">
+            <meta-data android:name="com.splunk.mint.API_KEY" android:value="@string/API_KEY"/>
+        </config-file>
+    </platform>
+    
+    <platform name="ios">
+        
+        <config-file target="config.xml" parent="/*">
+            <feature name="CordovaMint">
+                <param name="ios-package" value="CordovaMint" />
+                <param name="onload" value="true" />
+            </feature>
+            <plugin name="CordovaMint" value="CordovaMint"/>
+        </config-file>
+        
+        <header-file src="platforms/ios/src/CordovaMint.h" target-dir="SplunkMint"/>
+        <source-file src="platforms/ios/src/CordovaMint.m" target-dir="SplunkMint"/>
+        
+        <preference name="API_KEY" />
+        
+        <framework src="platforms/ios/lib/SplunkMint.framework" custom="true" />
+        <framework src="CoreTelephony.framework" />
+        <framework src="QuartzCore.framework" />
+        <framework src="SystemConfiguration.framework" />
+        <framework src="libz.dylib" />
+        <framework src="WebKit.framework"/>
+        
+        <config-file target="*-Info.plist" parent="MINT_API_KEY">
+            <string>$API_KEY</string>
+        </config-file>
+        
+    </platform>
+    
+</plugin>
