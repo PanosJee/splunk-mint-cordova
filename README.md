@@ -1,28 +1,39 @@
-This is an experimental build
+# Splunk MINT Android & iOS SDK for Cordova
 
-******
+## This is an unofficial Cordova plugin for the Splunk MINT Android & iOS SDKs
 
-### Set up your environment
-Make sure you have node & npm installed. Follow the instructions on Cordova website on how to install the right dependendcies
+### Installation
 
-#### Mac installation
-If you are on Mac the fastest way to install node and npm is: brew install npm (if you have brew installed)
-Then all you have to do is:
-sudo npm install –g cordova
-npm install –g plugman
- 
- 
-### Get an api key
-Log into your account at mint.splunk.com and create a new API key
+In your Cordova project directory run this command:
+```
+*Android*
+plugman install -platform android -project platforms/android -plugin com.splunk.mint --variable API_KEY=YOURAPIKEY
 
-### Install the Cordova MINT SDK
+*iOS*
+plugman install -platform ios -project platforms/ios -plugin com.splunk.mint --variable API_KEY=YOURAPIKEY
+```
 
-* Get the .tar.gz from Bitbucket (git.splunk.com)
-* Open the terminal and go to (cd) the directory of your Cordova project
-* Then run the following command:
-`plugman install --platform android --plugin /path/to/splunkmintcordovasdk/ --project platforms/android/ --variable API_KEY=yourapikey`
-* After plugman has ran you should see the following:
-> Installing "splunkmint" for android
- 
-### Testing the integration
-You can now launch your app, open Safari (for iOS builds) or Chrome (for Android builds) and inspect the running app. You can open the Chrome/Safari developer tools and go to console. You should be able to call the MINT object and send some commands like `Mint.logEvent('Test')`. Then type `Mint.flush()` to send the data and inspect them in Splunk Enterprise.
+
+### Congifuring symbolication for iOS
+You can read more on how to upload dSYMs in case you want to symbolicate native crashes at [Splunk Docs](http://docs.splunk.com/Documentation/MintIOSSDK/latest/DevGuide/Configureyourprojectforsymbolication).
+
+Now you can either run your app directly from Xcode/Android sutiod or exit out and run your app via the command line. In several minutes, you should be able to see data being reported in Splunk Enterprise.
+
+### Functions
+The following functions are available for custom logging & attribute setting. Please refer to Splunk Docs for further information. The functions available to the Cordova web view map one to one to the functions provided by the native SDKs.
+
++ Mint.addExtraData(key, value)
++ Mint.clearExtraData()
++ Mint.closeSession()
++ Mint.logEvent(eventName, options)
++ Mint.transactionStart(eventName, options)
++ Mint.transactionStop(eventName, options)
++ Mint.transactionCancel(eventName, options)
++ Mint.setUserIdentifier(userName)
+
+
+##License
+
+splunk-mint-cordova plugin is licensed under the Apache 2 License. http://www.apache.org/licenses/LICENSE-2.0.html
+
+SplunkMint.framework (Splunk MINT SDK for iOS) & mint.jar (Splunk MINT SDK for Android) are Copyright (c) 2014 Splunk. All rights reserved. For license details see http://www.splunk.com/en_us/legal/terms/splunk-mint-terms-of-service.html
