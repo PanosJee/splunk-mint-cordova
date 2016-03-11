@@ -6,10 +6,10 @@
 
 In your Cordova project directory run this command:
 ```
-*Android*
+// Android
 plugman install -platform android -project platforms/android -plugin com.splunk.mint --variable API_KEY=YOURAPIKEY
 
-*iOS*
+// iOS
 plugman install -platform ios -project platforms/ios -plugin com.splunk.mint --variable API_KEY=YOURAPIKEY
 ```
 
@@ -25,6 +25,7 @@ The following functions are available for custom logging & attribute setting. Pl
 + Mint.addExtraData(key, value)
 + Mint.clearExtraData()
 + Mint.closeSession()
++ Mint.flush()
 + Mint.logEvent(eventName, options)
 + Mint.transactionStart(eventName, options)
 + Mint.transactionStop(eventName, options)
