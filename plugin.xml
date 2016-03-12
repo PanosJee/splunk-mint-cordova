@@ -2,17 +2,18 @@
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
     xmlns:android="http://schemas.android.com/apk/res/android"
     id="com.splunk.mint"
-    version="4.2.1">
+    version="4.4.0">
 
-    <name>splunkmint</name>
+    <name>com.splunk.mint</name>
+
     <js-module name="tracekit" src="www/tracekit.js">
-        <merges target="splunkmint"/>
+        <clobbers target="TraceKit" />
     </js-module>
-    <js-module name="mintbridge" src="www/mintbridge.js">
-        <merges target="splunkmint"/>
-    </js-module>
+    <js-module name="bridge" src="www/bridge.js">
+        <clobbers target="mintBridge" />
+    </js-module>    
     <js-module name="splunkmint" src="www/splunkmint.js">
-        <clobbers target="splunkmint.cordova"/>
+        <clobbers target="window.Mint" />
     </js-module>
     <description>
     	Cordova plugin for Splunk MINT
@@ -21,7 +22,7 @@
     	Apache 2.0
     </license>
     <keywords>
-    	cordova,splunk,mint,splunkmint,apm,mobile,analytics
+    	cordova,splunk,mint,splunkmint,logging,mobile,analytics
     </keywords>
     <engines>
         <engine name="cordova" version=">=3.3.0" />
@@ -35,7 +36,7 @@
         
         <config-file target="res/xml/config.xml" parent="/*">
             <feature name="CordovaMint">
-                <param name="android-package" value="splunkmint.CordovaMint" />
+                <param name="android-package" value="com.splunk.mint.cordova" />
                 <param name="onload" value="true" />
             </feature>
         </config-file>
@@ -50,13 +51,11 @@
     </platform>
     
     <platform name="ios">
-        
         <config-file target="config.xml" parent="/*">
             <feature name="CordovaMint">
                 <param name="ios-package" value="CordovaMint" />
                 <param name="onload" value="true" />
             </feature>
-            <plugin name="CordovaMint" value="CordovaMint"/>
         </config-file>
         
         <header-file src="platforms/ios/src/CordovaMint.h" target-dir="SplunkMint"/>

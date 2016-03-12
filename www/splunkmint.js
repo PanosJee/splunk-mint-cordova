@@ -1,17 +1,24 @@
-window.Mint = (function(){
+// Copyright 2016 Splunk
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+var SPLUNKMINT_VERSION = "v4.4.0";
+
+var SplunkMint = function(){ 
     // remote settings should be stored here
-    var config = {
+    var config = {};
 
-    };
-
-    var sendJSErrorToBridge = function(error, handled){
-        var stacktrace = error.stack.map(function(s){ return s.func+"@"+s.url+":"+s.line }).join('\n');
-        mintBridge.javascriptError(error.message, error.url, error.stack[0].line, stacktrace, handled);
-    }
-
-    var errorLogger = window.TraceKit.report;
-
-    var initNetworkLogger = function() {
+    var ApplyXMLHTTPRequestMonitor = function() {
         var open = XMLHttpRequest.prototype.open;
         var send = XMLHttpRequest.prototype.send;
         XMLHttpRequest.prototype.open = function(method, url, async, user, pass) {
@@ -49,38 +56,43 @@ window.Mint = (function(){
             send.call(this, data);
         };
     };
+    // Initialize monitors
+    ApplyXMLHTTPRequestMonitor();
 
-    var pageLoaded = function() {
+    var WindowLoadedCallback = function() {
         // Get referrer (previous screen)
         // Note won't work with logView
         var currentView = window.location.pathname;
+        currentView = currentView.replace(/[A-F0-9]{8}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{12}/g, "*");
         // if preview view was empty then get previous view from referrer
         var host = window.location.host;
-        
         var protocol = window.location.protocol;
         // If you want work with loadEventEnd, make sure to get it after the load event has ended.
         setTimeout(function(){
             // Performance metrics
-            var pageLoadTime = window.performance.timing.loadEventEnd - window.performance.timing.navigationStart;
-            var domainLookupTime = window.performance.timing.domainLookupEnd - window.performance.timing.domainLookupStart;
-            var domProcessingTime = window.performance.timing.domComplete - window.performance.timing.domLoading;
-            var serverTime = window.performance.timing.responseEnd - window.performance.timing.responseStart;
+            if (window.navigator.userAgent.indexOf("Android") == -1) {
+                Mint.logView(currentView, {});
+            } else {
+                var pageLoadTime = window.performance.timing.loadEventEnd - window.performance.timing.navigationStart;
+                var domainLookupTime = window.performance.timing.domainLookupEnd - window.performance.timing.domainLookupStart;
+                var domProcessingTime = window.performance.timing.domComplete - window.performance.timing.domLoading;
+                var serverTime = window.performance.timing.responseEnd - window.performance.timing.responseStart;
 
-            mintBridge.logView(currentView, pageLoadTime, domainLookupTime, serverTime, domProcessingTime, host, null);
-        }, 0);
+                mintBridge.logView(currentView, pageLoadTime, domainLookupTime, serverTime, domProcessingTime, host, null);
+            }
+        }, 100);
     };
+    window.onload = WindowLoadedCallback;
 
-    // Initialize monitors
-    initNetworkLogger();
     // Capture JS crashes
-    errorLogger.subscribe(function mintLogger(errorReport){
-        var handled = errorReport.mode === 'stack' ? 'true' : 'false';
-        sendJSErrorToBridge(errorReport, handled);
+    var logException = window.TraceKit.report;
+    logException.subscribe(function mintLogger(error){
+        var handled = error.mode === 'stack' ? 'true' : 'false';
+        var stacktrace = error.stack.map(function(s){ return s.func+"@"+s.url+":"+s.line }).join('\n');
+        console.error("MINT: "+error.message+" at"+error.url);
+        mintBridge.javascriptError(error.message, error.url, error.stack[0].line, stacktrace, handled);
     });
 
-
-    // On page load run pageLoaded
-    window.onload = pageLoaded;
 
     function _format_extra_data(extraData){
         if ('userAgent' in window.navigator) {
@@ -105,8 +117,8 @@ window.Mint = (function(){
     }
 
     return {
-        'errorLogger': function(ex){
-            errorLogger(ex);
+        'logException': function(ex){
+            logException(ex);
             return Mint;
         },
         'initAndStartSession': function(name){ 
@@ -162,5 +174,6 @@ window.Mint = (function(){
             return Mint; 
         }
     }
-}());
+};
 
+module.exports = SplunkMint();

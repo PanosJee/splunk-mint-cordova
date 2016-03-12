@@ -25,12 +25,9 @@
     [self.commandDelegate runInBackground:^{
         [[MintWebViewJavaScriptBridge sharedInstance] callFunction:@"userIdentifier" withArgs:[command.arguments objectAtIndex:0]];
     }];
-    
-
 }
 
 - (void) flush:(CDVInvokedUrlCommand*)command {
-    
     [[MintWebViewJavaScriptBridge sharedInstance] callFunction:@"flushAsyncWithBlock" withArgs:command.arguments];
 }
 
@@ -56,6 +53,7 @@
          callFunction:@"transactionStop:andResultBlock" withArgs:command.arguments];
     }];
 }
+
 - (void) transactionCancel:(CDVInvokedUrlCommand*)command {
     [self.commandDelegate runInBackground:^{
         [[MintWebViewJavaScriptBridge sharedInstance] callFunction:@"transactionCancel:reason:andResultBlock" withArgs:command.arguments];
@@ -81,10 +79,8 @@
     }];
 }
 
-
 - (void) logView:(CDVInvokedUrlCommand*)command {
     [self.commandDelegate runInBackground:^{
-
         [[MintWebViewJavaScriptBridge sharedInstance] callFunction:@"logView" withArgs:@[[command.arguments objectAtIndex:0], [command.arguments objectAtIndex:1]]];
     }];
 }
