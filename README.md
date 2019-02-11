@@ -1,4 +1,6 @@
 # Splunk MINT Android & iOS SDK for Cordova
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FPanosJee%2Fsplunk-mint-cordova.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FPanosJee%2Fsplunk-mint-cordova?ref=badge_shield)
+
 
 ## This is an unofficial Cordova plugin for the Splunk MINT Android & iOS SDKs
 
@@ -38,3 +40,6 @@ The following functions are available for custom logging & attribute setting. Pl
 splunk-mint-cordova plugin is licensed under the Apache 2 License. http://www.apache.org/licenses/LICENSE-2.0.html
 
 SplunkMint.framework (Splunk MINT SDK for iOS) & mint.jar (Splunk MINT SDK for Android) are Copyright (c) 2014 Splunk. All rights reserved. For license details see http://www.splunk.com/en_us/legal/terms/splunk-mint-terms-of-service.html
+
+
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FPanosJee%2Fsplunk-mint-cordova.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2FPanosJee%2Fsplunk-mint-cordova?ref=badge_large)
